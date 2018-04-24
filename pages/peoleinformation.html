@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+
+
+    <link rel="stylesheet" href="../plugin/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugin/bootstrap/bootstrap-table.css">
+    <link rel="stylesheet" href="../plugin/leaflet/leaflet.css" />
+    <!--<style>
+        body {
+            width: 100%;
+            height: 100%;
+        }
+    </style>-->
+
+</head>
+
+<body>
+    <ul class="breadcrumb">
+        <li class="active" role="button" href="#modal-container-436546" data-toggle="modal">
+            人员管理
+        </li>
+
+    </ul>
+
+
+
+
+
+
+    <div class="container">
+
+        <table id="table" data-width="246" data-pagination="true" data-page-number="1" data-page-size="10" data-search="true" data-show-refresh="true" data-show-toggle="true">
+            <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="id" data-align="center">人员编号</th>
+                    <th data-field="name" data-align="center">姓名</th>
+                    <th data-field="classic" data-align="center">手机号</th>
+                    <th data-field="time" data-align="center">角色</th>
+                    <th data-field="people" data-align="center">职位</th>
+                    <th data-field="st" data-align="center">人员状态</th>
+
+                    <th data-field="action" data-align="center" data-formatter="actionFormatter">Action</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+
+
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <a class="btn" id="modal-436546" role="button" href="#modal-container-436546" data-toggle="modal">触发遮罩窗体</a>
+
+                <div class="modal fade" id="modal-container-436546" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    标题
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+
+
+                                <div id="map" width="400" height="400" class="panel panel-default "></div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button> <button class="btn btn-primary" type="button">保存</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../plugin/jquery/jquery-3.1.1.min.js"></script>
+    <script src="../plugin/bootstrap/bootstrap.min.js"></script>
+    <script src="../plugin/bootstrap/bootstrap-table.js"></script>
+    <script src="../plugin/leaflet/leaflet.js"></script>
+    <script>
+        var mymap = L.map('map').setView([34.95293, 109.5845], 13);
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            maxZoom: 10,
+            id: 'mapbox.streets'
+        }).addTo(mymap);
+    </script>
+
+    <script>
+        var $table = $('#table');
+        $(function() {
+            $table.bootstrapTable({
+                data: [{
+                    "id": 20161128150545800,
+                    "name": "张三",
+                    "classic": "13008402242",
+                    "time": "巡检管理人员",
+                    "people": "巡检工",
+                    "st": "在线"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完成",
+                    "classic": "13008402242",
+                    "time": "巡检人员",
+                    "people": "巡检工",
+                    "st": "在线"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "方才",
+                    "classic": "13008402242",
+                    "time": "巡检人员",
+                    "people": "巡检工",
+                    "st": "在线"
+
+                }, {
+                    "id": 20161128150545800,
+                    "name": "方才",
+                    "classic": "13008402242",
+                    "time": "巡检人员",
+                    "people": "巡检工",
+                    "st": "在线"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "李正",
+                    "st": "在线"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "方才",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "王欣",
+                    "st": "在线"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "方才",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "杨进",
+                    "st": "在线"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完方才成",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "虞姬"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "方才",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "方才"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完成",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "信通"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "行子",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "行子",
+                    "classic": "13008402242",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }]
+            });
+        });
+
+
+
+        function actionFormatter() {
+            return '<i class="glyphicon glyphicon-map-marker"></i> <i class="glyphicon glyphicon-plus-sign"></i><i class="glyphicon glyphicon-minus-sign"></i>';
+        }
+    </script>
+
+</body>
+
+</html>

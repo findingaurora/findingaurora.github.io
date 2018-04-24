@@ -1,0 +1,136 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../plugin/bootstrap/bootstrap.min.css">
+
+</head>
+
+<body>
+
+
+
+
+    <div id="treeview" style="width: 300px; height: 300px">
+    </div>
+
+    <div id="treeview1" style="width: 300px; height: 300px">
+
+    </div>
+
+    <button type="button" onclick="deleteNode()">删除节点</button>
+    <button type="button" onclick="addNode()">添加节点</button>
+    <button type="button" onclick="deleteChildrenNode()">清除全部</button>
+    <script src="../plugin/jquery/jquery-3.1.1.min.js"></script>
+    <script src="../plugin/bootstrap/tree/bootstrap-treeview.js"></script>
+    <script type="text/javascript">
+        function DomTree() {
+            var data = [{
+                text: "工程师",
+                nodes: [{
+                    text: "王晓",
+                }, {
+                    text: "李冰"
+                }]
+            }, {
+                text: "巡线员",
+                nodes: [{
+                    text: "京城",
+                }, {
+                    text: "王华"
+                }]
+            }];
+            return data;
+        }
+
+
+
+
+        function buildDomTree() {
+
+            var data = [{
+                text: "工程师",
+                nodes: [{
+                    text: "王晓",
+                }]
+            }, {
+                text: "巡线员",
+                nodes: [{
+                    text: "王晓",
+                }]
+            }];
+            return data;
+        }
+
+
+
+        $(function() {
+            var options = {
+                bootstrap2: false,
+                showTags: true,
+                levels: 5,
+                data: DomTree()
+            };
+            $('#treeview').treeview(options);
+        });
+
+
+        $(function() {
+            var options = {
+                bootstrap2: false,
+                showTags: true,
+                levels: 5,
+                data: buildDomTree()
+            };
+            $('#treeview1').treeview(options);
+        });
+
+
+
+        /**
+         * 增加节点
+         */
+        function addNote() {
+            //得到选择的节点
+            // var nodeData = $('#treeview').treeview('getSelected')[0];
+            //获取数据，添加到树中
+
+            $('#treeview1').treeview("addNode", [2, {
+                node: {
+                    text: "新加的菜单",
+                    href: "001005"
+                }
+            }])
+        }
+
+        /**
+         * 删除节点,如果该节点如果是根节点，不能删除
+         */
+        function deleteNode() {
+            var nodeData = $('#treeview1').treeview('getSelected')[0];
+            $('#treeview1').treeview("deleteNode", nodeData.nodeId);
+        }
+
+        /**
+         * 删除全部子节点
+         */
+        function deleteChildrenNode() {
+            $(function() {
+                var options = {
+                    bootstrap2: false,
+                    showTags: true,
+                    levels: 5,
+                    data: buildDomTree()
+                };
+                $('#treeview1').treeview(options);
+            });
+
+        }
+    </script>
+
+
+</body>
+
+</html>

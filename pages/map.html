@@ -1,0 +1,632 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../plugin/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugin/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="../plugin/leaflet-draw/leaflet.draw.css" />
+    <link rel="stylesheet" href="../css/map.css" />
+    <!--鹰眼-->
+    <link rel="stylesheet" href="../plugin/leaflet/Leaflet-MiniMap-master/Control.MiniMap.css" />
+    <!--地图切换样式-->
+    <link rel="stylesheet" href="../plugin/Leaflet-IconLayers-master/src/iconLayers.css" />
+    <!--报警-->
+    <link rel="stylesheet" href="../plugin/leaflet-icon-pulse-master/L.Icon.Pulse.css">
+    <style>
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+        
+        .legend {
+            text-align: left;
+            line-height: 18px;
+            color: #555;
+        }
+        
+        .legend i {
+            width: 100px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+    <!--添加地图div-->
+    <div id="map" style=" width: 100%; height: 95%; "></div>
+
+
+    <!--图层框-->
+
+    <div class="panel panel-default controlfeaturelayer">
+        <div class="content">
+            <ul>
+                <li> <input type="checkbox" id="draw">绘图层</li>
+                <br>
+                <li> <input type="checkbox" id="point">点图层</li>
+                <br>
+                <li> <input type="checkbox" id="line">线图层</li>
+                <br>
+                <li> <input type="checkbox" id="main">面图层</li>
+        </div>
+
+    </div>
+    <div class="buttonalert">
+        <button class="btn btn-default" type="button" onclick="alert()">报警</button>
+    </div>
+
+
+    <!--弹出模态框chart-->
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">月平均降水量统计</h4>
+                </div>
+                <div class="modal-body">
+
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+
+    <!--报警-->
+    <div class="modal fade" id="alert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">险情报告</h4>
+                </div>
+                <div class="modal-body">
+
+                    <span>榆林市xx区可能险情，请发布巡查任务</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="task()">发布任务</button>
+                    <button type="button" class="btn btn-primary">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+
+
+
+
+    <script src="../plugin/jquery/jquery-3.1.1.min.js"></script>
+    <script src="../plugin/bootstrap/bootstrap.min.js"></script>
+    <script src="../plugin/bootstrap/chart/Chart.js"></script>
+    <script src="../js/ShanXiRain.js"></script>
+    <script src="../js/ShanXiRiver.js"></script>
+
+    <script src="../js/point.js"></script>
+
+    <script src="../plugin/leaflet/leaflet-src.js"></script>
+    <script src="../plugin/leaflet/leaflet.js"></script>
+    <script src="../plugin/leaflet-draw/Leaflet.draw.js"></script>
+    <script src="../plugin/leaflet-draw/Leaflet.Draw.Event.js"></script>
+    <script src="../plugin/leaflet-draw/Toolbar.js"></script>
+    <script src="../plugin/leaflet-draw/Tooltip.js"></script>
+    <script src="../plugin/leaflet-draw/ext/GeometryUtil.js"></script>
+    <script src="../plugin/leaflet-draw/ext/LatLngUtil.js"></script>
+    <script src="../plugin/leaflet-draw/ext/LineUtil.Intersect.js"></script>
+    <script src="../plugin/leaflet-draw/ext/Polygon.Intersect.js"></script>
+    <script src="../plugin/leaflet-draw/ext/Polyline.Intersect.js"></script>
+    <script src="../plugin/leaflet-draw/ext/TouchEvents.js"></script>
+    <script src="../plugin/leaflet-draw/draw/DrawToolbar.js"></script>
+    <script src="../plugin/leaflet-draw/draw/handler/Draw.Feature.js"></script>
+    <script src="../plugin/leaflet-draw/draw/handler/Draw.SimpleShape.js"></script>
+    <script src="../plugin/leaflet-draw/draw/handler/Draw.Polyline.js"></script>
+    <script src="../plugin/leaflet-draw/draw/handler/Draw.Circle.js"></script>
+    <script src="../plugin/leaflet-draw/draw/handler/Draw.Marker.js"></script>
+    <script src="../plugin/leaflet-draw/draw/handler/Draw.Polygon.js"></script>
+    <script src="../plugin/leaflet-draw/draw/handler/Draw.Rectangle.js"></script>
+    <script src="../plugin/leaflet-draw/edit/EditToolbar.js"></script>
+    <script src="../plugin/leaflet-draw/edit/handler/EditToolbar.Edit.js"></script>
+    <script src="../plugin/leaflet-draw/edit/handler/EditToolbar.Delete.js"></script>
+    <script src="../plugin/leaflet-draw/Control.Draw.js"></script>
+    <script src="../plugin/leaflet-draw/edit/handler/Edit.Poly.js"></script>
+    <script src="../plugin/leaflet-draw/edit/handler/Edit.SimpleShape.js"></script>
+    <script src="../plugin/leaflet-draw/edit/handler/Edit.Circle.js"></script>
+    <script src="../plugin/leaflet-draw/edit/handler/Edit.Rectangle.js"></script>
+    <script src="../plugin/leaflet-draw/edit/handler/Edit.Marker.js"></script>
+    <script src="../plugin/leaflet/leaflet.ChineseTmsProviders.js"></script>
+
+    <!-- 鹰眼 -->
+    <script src="../plugin/leaflet/Leaflet-MiniMap-master/Control.MiniMap.js" type="text/javascript"></script>
+    <!--地图切换样式-->
+    <script src="../plugin/Leaflet-IconLayers-master/src/iconLayers.js" type="text/javascript"></script>
+    <!--添加地图切换-->
+    <script type="text/javascript" src="../plugin/Leaflet-IconLayers-master/examples/providers.js"></script>
+    <!--报警-->
+    <script src="../plugin/leaflet-icon-pulse-master/L.Icon.Pulse.js" type="text/javascript"></script>
+
+    <!--37.62946, 109.22607-->
+    <script>
+        // //加载地图
+        // var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        //     osm = L.tileLayer(osmUrl, {
+        //         maxZoom: 18,
+        //     }),
+        //     map = new L.Map('map', {
+        //         center: new L.LatLng(37.62946, 109.22607),
+        //         zoom: 7
+        //     }),
+        //     drawnItems = L.featureGroup().addTo(map);
+        // L.control.layers({
+        //     'osm': osm.addTo(map),
+        //     "google": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+        //         attribution: ''
+        //     }),
+        //     "mapbox": L.tileLayer('https://api.mapbox.com/styles/v1/aurorafinding/cj01ovhel00052rmlfim7ndk9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYXVyb3JhZmluZGluZyIsImEiOiJjajAwdmNhNnowNW50MnBxbGxidTUzZHkwIn0.mmTQIekI52O0Y9HTIwP0mg', {
+        //         attribution: ''
+        //     }),
+        //     "GeoQ": L.tileLayer.chinaProvider('Geoq.Normal.Color', {
+        //         attribution: ''
+        //     }),
+        //     "天地图": L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
+        //         attribution: ''
+        //     })
+        // }, {
+        //     '绘图层': drawnItems,
+        //     '县区点': drawnItems,
+        //     '县区面': drawnItems,
+        //     '河流': drawnItems
+        // }, {
+        //     position: 'topright',
+        //     collapsed: true
+        // }).addTo(map);
+        // 地图底图
+        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osm = L.tileLayer(osmUrl, {
+                maxZoom: 18,
+            }),
+            map = new L.Map('map', {
+                center: new L.LatLng(34.95293, 109.5845),
+                zoom: 8
+            }),
+            drawnItems = L.featureGroup().addTo(map);
+
+        var layers = [];
+        for (var providerId in providers) {
+            layers.push(providers[providerId]);
+        }
+        // 切换地图
+        var ctrl = L.control.iconLayers(layers).addTo(map);
+
+        // 点图层全局
+        var pointlayer = L.geoJSON();
+        // 河流线图层
+        var line = L.geoJSON();
+        // 面图层
+        var mymian = L.geoJSON();
+        var legend = L.control();
+        var info = L.control();
+        // draw 图层
+
+
+
+        function task() {
+            parent.document.getElementById("survey").click();
+            parent.document.getElementById("page").src = "pages/survey.html";
+
+        }
+
+
+
+        // geojson点线面图层
+
+        $(document).ready(function() {
+            var $point = $("#point"); //jQuery对象
+            $point.click(function() {
+                if ($point.is(":checked")) { //jQuery方式判断
+                    addpoint();
+                } else {
+                    deletepoint();
+                }
+            })
+        });
+
+        $(document).ready(function() {
+            var $line = $("#line"); //jQuery对象
+            $line.click(function() {
+                if ($line.is(":checked")) { //jQuery方式判断
+                    addriver();
+                } else {
+                    deleteriver();
+                }
+            })
+        });
+
+        $(document).ready(function() {
+            var $mian = $("#main"); //jQuery对象
+            $mian.click(function() {
+                if ($mian.is(":checked")) { //jQuery方式判断
+                    addmian();
+                } else {
+                    deletemian();
+                }
+            })
+        });
+
+        //鹰眼
+        //Plugin magic goes here! Note that you cannot use the same layer object again, as that will confuse the two map controls
+        var osm2 = new L.TileLayer(osmUrl, {
+            minZoom: 0,
+            maxZoom: 13,
+
+        });
+        var miniMap = new L.Control.MiniMap(osm2, {
+            toggleDisplay: true
+        }).addTo(map);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //绘图工具
+        map.addControl(new L.Control.Draw({
+            edit: {
+                featureGroup: drawnItems,
+                poly: {
+                    allowIntersection: false
+                }
+            },
+            draw: {
+                polygon: {
+                    allowIntersection: false,
+                    showArea: true
+                }
+            }
+        }));
+        map.on(L.Draw.Event.CREATED, function(event) {
+            var layer = event.layer;
+
+            drawnItems.addLayer(layer);
+        });
+
+
+
+        function alert() {
+
+            // 报警点
+            var pulsingIcon = L.icon.pulse({
+                iconSize: [20, 20],
+                color: 'red'
+            });
+            var marker12 = L.marker([34.900, 109.5000], {
+                icon: pulsingIcon
+            }).addTo(map);
+
+            marker12.on('click', function(e) {
+                $('#alert').modal('show');
+            })
+
+
+
+        }
+
+        //geojson数据陕西显示
+        function addmian() {
+
+            //加入地图
+            mymian = L.geoJSON(mian, {
+                style: style,
+                onEachFeature: onEachFeature
+            }).addTo(map);
+
+            legend = L.control({
+                position: 'bottomright'
+            });
+
+            legend.onAdd = function(map) {
+
+                var div = L.DomUtil.create('div', 'info legend'),
+                    grades = [0, 2, 2.2, 2.4, 2.5, 2.8, 3, 3.2],
+                    labels = [],
+                    from, to;
+                for (var i = 0; i < grades.length; i++) {
+                    from = grades[i];
+                    to = grades[i + 1];
+                    labels.push(
+                        '<i style="background:' + getColor(from + 0.1) + '"></i> ' +
+                        from + (to ? '&ndash;' + to : '+'));
+                }
+                div.innerHTML = labels.join('<br>');
+                return div;
+            };
+            legend.addTo(map);
+
+            // 字段属性显示
+            info = L.control({
+                position: 'bottomright'
+            });
+            info.onAdd = function(map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            info.update = function(props) {
+                this._div.innerHTML = '<h4>陕西省行政区</h4>' + (props ?
+                    '<b>' + props.name + '</b><br />' :
+                    '请选择行政区域');
+            };
+            info.addTo(map);
+
+            //hover方法
+            function highlightFeature(e) {
+                var layer = e.target;
+                layer.setStyle({
+                    weight: 5,
+                    color: '#666',
+                    dashArray: '',
+                    fillOpacity: 0.7
+                });
+                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                    layer.bringToFront();
+                }
+                info.update(layer.feature.properties);
+            }
+            //恢复起始颜色
+            function resetHighlight(e) {
+                mymian.resetStyle(e.target);
+                info.update();
+            }
+            //放大到元素
+            function zoomToFeature(e) {
+                map.fitBounds(e.target.getBounds());
+            }
+            //将各个响应方法加入地图层，然后在加入地图的方法中添加该方法
+            function onEachFeature(feature, layer) {
+                layer.on({
+                    mouseover: highlightFeature,
+                    mouseout: resetHighlight,
+                    click: zoomToFeature
+                });
+            }
+
+
+
+            //按属性设置其分层颜色
+            function getColor(d) {
+                return d > 3.2 ? '#800026' :
+                    d > 3.0 ? '#BD0026' :
+                    d > 2.8 ? '#E31A1C' :
+                    d > 2.6 ? '#FC4E2A' :
+                    d > 2.4 ? '#FD8D3C' :
+                    d > 2.2 ? '#FEB24C' :
+                    d > 2 ? '#FED976' :
+                    '#FFEDA0';
+            }
+            //图层样式
+            function style(feature) {
+                return {
+                    fillColor: getColor(feature.properties.rain),
+                    weight: 2,
+                    opacity: 1,
+                    color: 'white',
+                    dashArray: '3',
+                    fillOpacity: 0.7
+                };
+            }
+
+
+
+        }
+
+
+        //清除面图层
+        function deletemian() {
+            mymian.clearLayers();
+            legend.remove();
+            info.remove();
+        }
+
+
+        function addpoint() {
+            //设置Icon属性
+            var myIcon = L.Icon.extend({
+                options: {
+
+                    iconSize: [30, 30],
+                }
+            });
+            //设置各点图片链接
+            var pcIcon = new myIcon({
+                iconUrl: '../images/magicIcon.png'
+            });
+            L.icon = function(options) {
+                return new L.Icon(options);
+            };
+            //加入各市点数据
+            // 临渭  34.49807, 109.48185
+            // 	华县	34.49071, 109.75857
+            //  潼关	34.53767, 110.24368
+            // 	大荔	34.7904, 109.9395
+            // 	合阳  35.21421, 110.15717
+            // 澄城  35.18026, 109.92886
+            // 	蒲城 34.95293, 109.5845
+            // 白水 35.17269, 109.59
+            // 富平 34.74584, 109.18041
+            // 韩城 35.47297, 110.44968
+            //  华阴	34.55916, 110.09056
+            var marker1 = L.marker([34.49807, 109.48185], {
+                icon: pcIcon
+            });
+            var marker2 = L.marker([34.49071, 109.75857], {
+                icon: pcIcon
+            });
+
+            var marker3 = L.marker([34.53767, 110.24368], {
+                icon: pcIcon
+            });
+            var marker4 = L.marker([34.7904, 109.9395], {
+                icon: pcIcon
+            });
+            var marker5 = L.marker([35.21421, 110.15717], {
+                icon: pcIcon
+            });
+            var marker6 = L.marker([35.18026, 109.92886], {
+                icon: pcIcon
+            });
+            var marker7 = L.marker([34.95293, 109.5845], {
+                icon: pcIcon
+            });
+            var marker8 = L.marker([35.17269, 109.59], {
+                icon: pcIcon
+            });
+            var marker9 = L.marker([34.74584, 109.18041], {
+                icon: pcIcon
+            });
+            var marker10 = L.marker([35.47297, 110.44968], {
+                icon: pcIcon
+            });
+            var marker11 = L.marker([34.55916, 110.09056], {
+                icon: pcIcon
+            });
+            pointlayer = L.featureGroup([marker1, marker2, marker2, marker3, marker4, marker5, marker6, marker7, marker8, marker9, marker10, marker11]).addTo(map);
+            11
+            marker1.on('click', function(e) {
+                    $('#myModal').modal('show');
+                    var ctx = document.getElementById("myChart");
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                            datasets: [{
+                                label: '# of Votes',
+                                data: [12, 19, 3, 5, 2, 3],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255,99,132,1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+
+                })
+                // pointlayer = L.geoJSON(point).bindPopup(function(layer) {
+                //     return layer.featuress.properties.osm_id;
+                // }).addTo(map);
+
+
+            // var myIcon = L.icon({
+            //     iconUrl: '../images/magicIcon.png',
+            //     iconSize: [32, 37],
+            //     iconAnchor: [16, 37],
+            //     popupAnchor: [0, -28]
+            // });
+
+
+
+
+
+
+
+            //     var pointlayer = L.geoJson(point, {
+
+            //         pointToLayer: function(feature, latlng) {
+            //             return L.marker(latlng, {
+            //                 icon: myIcon
+            //             });
+            //         }
+            //     }).addTo(map)
+        }
+
+        //清除点图层
+        function deletepoint() {
+            pointlayer.clearLayers();
+        }
+
+
+
+        function addriver() {
+            //加入地图
+            line = L.geoJSON(river, {
+                style: function(feature) {
+                    return {
+                        color: "Blue"
+                    };
+                }
+            }).addTo(map);
+        }
+
+        //清除线图层
+        function deleteriver() {
+            line.clearLayers();
+        }
+    </script>
+
+</body>
+
+</html>

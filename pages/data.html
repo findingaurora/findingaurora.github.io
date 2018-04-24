@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+
+
+    <link rel="stylesheet" href="../plugin/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugin/bootstrap/bootstrap-table.css">
+    <link rel="stylesheet" href="../plugin/leaflet/leaflet.css" />
+    <!--<style>
+        body {
+            width: 100%;
+            height: 100%;
+        }
+    </style>-->
+
+</head>
+
+<body>
+    <ul class="breadcrumb">
+        <li class="active" role="button" href="#modal-container-436546" data-toggle="modal">
+            人员管理
+        </li>
+
+    </ul>
+
+
+
+
+
+
+    <div class="container">
+
+        <table id="table" data-width="246" data-pagination="true" data-page-number="1" data-page-size="10" data-search="true" data-show-refresh="true" data-show-toggle="true">
+            <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="id" data-align="center">任务编号</th>
+                    <th data-field="name" data-align="center">任务状态</th>
+                    <th data-field="classic" data-align="center">任务类型</th>
+                    <th data-field="time" data-align="center">最新处置时间</th>
+                    <th data-field="people" data-align="center">任务发起人</th>
+
+                    <th data-field="action" data-align="center" data-formatter="actionFormatter">Action</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+
+
+
+    <script src="../plugin/jquery/jquery-3.1.1.min.js"></script>
+    <script src="../plugin/bootstrap/bootstrap.min.js"></script>
+    <script src="../plugin/bootstrap/bootstrap-table.js"></script>
+    <script src="../plugin/leaflet/leaflet.js"></script>
+
+
+    <script>
+        var $table = $('#table');
+        $(function() {
+            $table.bootstrapTable({
+                data: [{
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "请示",
+                    "time": "2016-11-28",
+                    "people": "张三"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完成",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "李四"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "王五"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完成",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "王鑫"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "意见",
+                    "time": "1996-07-09",
+                    "people": "李正"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完成",
+                    "classic": "请示",
+                    "time": "1996-07-09",
+                    "people": "王欣"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "请示",
+                    "time": "1996-07-09",
+                    "people": "杨进"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完成",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "虞姬"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完成",
+                    "classic": "请示",
+                    "time": "1996-07-09",
+                    "people": "方才"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "完成",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "信通"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }, {
+                    "id": 20161128150545800,
+                    "name": "处理中",
+                    "classic": "记录",
+                    "time": "1996-07-09",
+                    "people": "行子"
+                }]
+            });
+        });
+
+
+
+        function actionFormatter() {
+            return '<i class="glyphicon glyphicon-map-marker"></i> <i class="glyphicon glyphicon-eye-open"></i>';
+        }
+    </script>
+
+</body>
+
+</html>

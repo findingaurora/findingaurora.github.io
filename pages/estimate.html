@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>leaflet-tilelayer-mask</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="leaflet-tilelayer-mask.js"></script>
+    <link rel="stylesheet" href="../plugin/bootstrap/bootstrap.min.css">
+    <script src="../plugin/jquery/jquery-3.1.1.min.js"></script>
+    <script src="../plugin/bootstrap/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+
+
+
+
+
+    <div id="map" style="position:fixed;top:0;left:0;right:0;bottom:0;">
+
+    </div>
+    <div style=" position: absolute; bottom: 0px;   ">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">评估信息</h4>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="inputEmail3">请输入流域的水位</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="inputEmail3" type="email" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="inputPassword3">请输入流域的流速</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="inputPassword3" type="password" />
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">灾害评估</button>
+                    <button type="button" class="btn btn-primary">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var map = L.map("map", {
+            zoom: 16,
+            center: [35.6323, 139.768815],
+            maxZoom: 18,
+            minZoom: 15
+        });
+        map.zoomControl.setPosition("bottomright");
+        map.attributionControl.addAttribution("<a href='https://github.com/frogcat/leaflet-tilelayer-mask'>fork me on GitHub</a>");
+        L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg', {
+            attribution: '<a href="http://maps.gsi.go.jp/development/">GSI Ortho</a>'
+        }).addTo(map);
+
+
+
+        map.on("mousemove", function(e) {
+            mask.setCenter(e.containerPoint);
+        });
+    </script>
+</body>
+
+</html>
